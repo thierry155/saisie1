@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Exercice JavaScript</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background-color:#f4f6f8;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+    width:350px;
+}
+
+h2{
+    text-align:center;
+}
+
+input{
+    width:100%;
+    padding:8px;
+    margin:8px 0;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    background:#007BFF;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+#result{
+    margin-top:15px;
+    font-weight:bold;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+<h2>Programme JavaScript</h2>
+
+<label>Nom</label>
+<input type="text" id="nom">
+
+<label>Age</label>
+<input type="number" id="age">
+
+<label>Nombre préféré</label>
+<input type="number" id="nombre">
+
+<button onclick="verifier()">Valider</button>
+
+<div id="result"></div>
+</div>
+
+<script>
+function verifier(){
+
+let nom = document.getElementById("nom").value;
+let age = Number(document.getElementById("age").value);
+let nombre = Number(document.getElementById("nombre").value);
+
+let message = "";
+
+// Classification selon l'âge
+if(age < 13){
+message += "Bonjour " + nom + ", vous êtes un enfant.<br>";
+}
+else if(age >= 13 && age < 20){
+message += "Bonjour " + nom + ", vous êtes un adolescent.<br>";
+}
+else{
+message += "Bonjour " + nom + ", vous êtes un adulte.<br>";
+}
+
+// Vérification pair ou impair
+if(nombre % 2 === 0){
+message += "Votre nombre préféré " + nombre + " est pair !<br>";
+}
+else{
+message += "Votre nombre préféré " + nombre + " est impair !<br>";
+}
+
+// tâche supplémentaire
+if(nombre > age){
+message += "Wow, votre nombre préféré est plus grand que votre âge !";
+}
+
+document.getElementById("result").innerHTML = message;
+
+
+// ENVOI DES DONNEES VERS GOOGLE SHEETS
+fetch("https://script.google.com/macros/s/AKfycbzmnmPjdYll70l2wRD0CRDtnJoT9mDR8YVrKZDl8Nkm-lcAcJC0R7TxKaez-M3KVv2QEg/exec", {
+method: "POST",
+body: JSON.stringify({
+nom: nom,
+age: age,
+nombre: nombre
+})
+})
+.then(response => response.text())
+.then(data => {
+console.log("Données envoyées à Google Sheets");
+});
+
+}
+</script>
+
+</body>
+</html>
